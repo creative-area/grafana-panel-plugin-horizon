@@ -1,0 +1,70 @@
+<div class="editor-row">
+
+    <div class="section">
+        <h5>Horizon</h5>
+        <div class="editor-option">
+            <label class="small">Bands</label>
+            <select class="input-mini tight-form-input" ng-model="ctrl.panel.horizon.bands" ng-options="f for f in [2,3,4,5,6,7,8,9,10]" ng-change="ctrl.render()"></select>
+        </div>
+        <div class="editor-option">
+            <label class="small">Height</label>
+            <select class="input-mini tight-form-input" ng-model="ctrl.panel.horizon.horizonHeight" ng-options="f for f in [20,22,24,26,28,30,32,34,36,38,40]" ng-change="ctrl.render()"></select>
+        </div>
+        <div class="editor-option">
+            <label class="small">Margin</label>
+            <select class="input-mini tight-form-input" ng-model="ctrl.panel.horizon.marginBottom" ng-options="f for f in [0,1,2,3,4,5,6]" ng-change="ctrl.render()"></select>
+        </div>
+        <div class="editor-option">
+            <label class="small">Axis height</label>
+            <select class="input-mini tight-form-input" ng-model="ctrl.panel.horizon.axisHeight" ng-options="f for f in [20,21,22,23,24,25,26,27,28,29,30]" ng-change="ctrl.render()"></select>
+        </div>
+    </div>
+
+    <div class="section">
+        <h5>Display value</h5>
+        <div class="editor-option">
+            <label class="small">Unit</label>
+            <span class="dropdown" style="width: 140px;" ng-model="ctrl.panel.y_formats[0]" dropdown-typeahead="ctrl.unitFormats" dropdown-typeahead-on-select="ctrl.setUnitFormat(0, $subItem)">
+	  </span>
+        </div>
+        <div class="editor-option">
+            <label class="small">Decimals</label>
+            <input ng-change="ctrl.render()" placeholder="auto" type="number" class="input-mini tight-form-input" ng-model="ctrl.panel.horizon.decimals" ng-model-onblur>
+        </div>
+    </div>
+
+    <div class="section">
+        <h5>Colors</h5>
+        <div class="editor-option">
+            <label class="small">Background</label>
+            <input ng-change="ctrl.render()" placeholder="" type="text" class="input-small tight-form-input" ng-model="ctrl.panel.horizon.backgroundColor" ng-model-onblur>
+        </div>
+        <div class="editor-option">
+            <label class="small">Label</label>
+            <input ng-change="ctrl.render()" placeholder="" type="text" class="input-small tight-form-input" ng-model="ctrl.panel.horizon.labelColor" ng-model-onblur>
+        </div>
+    </div>
+
+    <div class="section">
+        <h5>Legend styles</h5>
+        <editor-opt-bool text="Show legend" model="ctrl.panel.legend.show" change="ctrl.refresh()"></editor-opt-bool>
+        <editor-opt-bool text="Include values" model="ctrl.panel.legend.values" change="ctrl.render()"></editor-opt-bool>
+        <editor-opt-bool text="Right side" model="ctrl.panel.legend.rightSide" change="ctrl.render()"></editor-opt-bool>
+    </div>
+
+    <div class="section" ng-if="ctrl.panel.legend.values">
+        <h5>Legend values</h5>
+        <editor-opt-bool text="Min" model="ctrl.panel.legend.min" change="ctrl.render()"></editor-opt-bool>
+        <editor-opt-bool text="Max" model="ctrl.panel.legend.max" change="ctrl.render()"></editor-opt-bool>
+        <editor-opt-bool text="Current" model="ctrl.panel.legend.current" change="ctrl.render()"></editor-opt-bool>
+        <editor-opt-bool text="Avg" model="ctrl.panel.legend.avg" change="ctrl.render()"></editor-opt-bool>
+        <editor-opt-bool text="Total" model="ctrl.panel.legend.total" change="ctrl.render()"></editor-opt-bool>
+    </div>
+
+    <div class="section">
+        <h5>Tooltip</h5>
+        <editor-opt-bool text="All series" model="ctrl.panel.tooltip.shared" change="ctrl.render()" tip="Show all series on same tooltip and a x croshair to help follow all series">
+        </editor-opt-bool>
+    </div>
+
+</div>

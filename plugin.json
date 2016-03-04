@@ -1,0 +1,23 @@
+{
+    "type": "panel",
+    "name": "Horizon",
+    "id": "horizon",
+
+    "staticRoot": ".",
+
+    "info": {
+        "description": "Horizon panel for grafana",
+        "author": {
+            "name": "Creative Area",
+            "url": "http://www.creative-area.net"
+        },
+        "keywords": ["horizon", "panel"],
+        "version": "1.0.0",
+        "updated": "2016-03-04"
+    },
+
+    "dependencies": {
+        "grafanaVersion": "2.6.x",
+        "plugins": []
+    }
+}

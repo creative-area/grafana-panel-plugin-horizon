@@ -1,0 +1,25 @@
+<div class="graph-wrapper">
+
+    <div class="horizon-legend-wrapper"
+      ng-style="{'top': (ctrl.panel.horizon.horizonHeight-17)+'px' }"
+      ng-if="ctrl.panel.legend.show"
+      style="position: relative; z-index: 10;"
+      horizon-legend></div>
+
+	<div class="graph-canvas-wrapper">
+
+		<div ng-if="datapointsWarning" class="datapoints-warning">
+			<span class="small" ng-show="!datapointsCount">
+				No datapoints at all <tip>No datapoints returned from metric query</tip>
+			</span>
+			<span class="small" ng-show="datapointsOutside">Datapoints outside time range <tip>Can be caused by timezone mismatch between browser and graphite server</tip></span>
+		</div>
+
+		<div grafana-horizon class="histogram-chart">
+		</div>
+
+	</div>
+
+</div>
+
+<div class="clearfix"></div>
