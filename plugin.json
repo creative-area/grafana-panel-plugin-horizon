@@ -1,7 +1,7 @@
 {
     "type": "panel",
     "name": "Horizon",
-    "id": "horizon",
+    "id": "grafana-panel-plugin-horizon",
 
     "staticRoot": ".",
 
@@ -11,13 +11,18 @@
             "name": "Creative Area",
             "url": "http://www.creative-area.net"
         },
-        "keywords": ["horizon", "panel"],
-        "version": "1.0.0",
-        "updated": "2016-03-04"
+        "keywords": ["horizon", "panel", "graph"],
+        "links": [
+            {
+                "name": "Project site", "url": "https://github.com/creative-area/grafana-panel-plugin-horizon"
+            }
+        ],
+        "version": "1.0.1",
+        "updated": "2016-04-05"
     },
 
     "dependencies": {
-        "grafanaVersion": "2.6.x",
+        "grafanaVersion": "3.x.x",
         "plugins": []
     }
 }

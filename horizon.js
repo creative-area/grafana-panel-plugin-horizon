@@ -7,7 +7,7 @@ define([
         './horizon.tooltip',
         'jquery.flot',
         './florizon',
-        'jquery.flot.events',
+        'app/plugins/panel/graph/jquery.flot.events',
         'jquery.flot.selection',
         'jquery.flot.time',
         'jquery.flot.crosshair'
@@ -62,7 +62,7 @@ define([
                     }, scope);
 
                     // Receive render events
-                    scope.$on('render', function(event, renderData) {
+                    ctrl.events.on('render', function(renderData) {
                         data = renderData || data;
                         if (!data) {
                             ctrl.refresh();

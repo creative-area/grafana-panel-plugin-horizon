@@ -13,6 +13,12 @@ define([
     function(_, sdk, kbn, moment, TimeSeries, fileExport) {
         'use strict';
 
+        var __extends = (this && this.__extends) || function (d, b) {
+            for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+            function __() { this.constructor = d; }
+            d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+        };
+
         var panelDefaults = {
             // datasource name, null = default datasource
             datasource: null,
@@ -77,7 +83,7 @@ define([
         };
 
         var HorizonCtrl = (function(_super) {
-
+            __extends(HorizonCtrl, _super);
             function HorizonCtrl($scope, $injector, annotationsSrv) {
                 _super.call(this, $scope, $injector);
                 this.annotationsSrv = annotationsSrv;
@@ -93,20 +99,21 @@ define([
 
                 _.defaults(this.panel, panelDefaults);
                 _.defaults(this.panel.tooltip, panelDefaults.tooltip);
-                _.defaults(this.panel.annotate, panelDefaults.annotate);
+                // _.defaults(this.panel.annotate, panelDefaults.annotate);
                 _.defaults(this.panel.grid, panelDefaults.grid);
                 _.defaults(this.panel.legend, panelDefaults.legend);
                 _.defaults(this.panel.horizon, panelDefaults.horizon);
-            };
 
-            HorizonCtrl.prototype = Object.create(_super.prototype);
-            HorizonCtrl.prototype.constructor = HorizonCtrl;
+                this.events.on('data-received', this.onDataReceived.bind(this));
+                this.events.on('data-error', this.onDataError.bind(this));
+                this.events.on('data-snapshot-load', this.onDataSnapshotLoad.bind(this));
+                this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
+                this.events.on('init-panel-actions', this.onInitPanelActions.bind(this));
+            };
 
             HorizonCtrl.templateUrl = 'public/plugins/horizon/module.html';
 
-            HorizonCtrl.prototype.initEditMode = function() {
-                _super.prototype.initEditMode.call(this);
-
+            HorizonCtrl.prototype.onInitEditMode = function() {
                 this.icon =  "fa fa-align-justify";
                 this.addEditorTab('Configuration', 'public/plugins/horizon/configEditor.html', 2);
 
@@ -120,11 +127,10 @@ define([
                 this.unitFormats = kbn.getUnitFormats();
             };
 
-            HorizonCtrl.prototype.getExtendedMenu = function() {
-                var menu = _super.prototype.getExtendedMenu.call(this);
-                menu.push({text: 'Export CSV', click: 'ctrl.exportCsv()'});
-                return menu;
-            };
+            HorizonCtrl.prototype.onInitPanelActions = function(actions) {
+                actions.push({text: 'Export CSV (series as rows)', click: 'ctrl.exportCsv()'});
+                actions.push({text: 'Export CSV (series as columns)', click: 'ctrl.exportCsvColumns()'});
+            }
 
             HorizonCtrl.prototype.setUnitFormat = function(axis, subItem) {
                 this.panel.y_formats[axis] = subItem.value;
@@ -132,48 +138,46 @@ define([
                 this.render();
             };
 
-            HorizonCtrl.prototype.refreshData = function(datasource) {
+            HorizonCtrl.prototype.issueQueries = function(datasource) {
                 this.annotationsPromise = this.annotationsSrv.getAnnotations(this.dashboard);
-                return this.issueQueries(datasource)
-                    .then(this.dataHandler.bind(this))
-                    .catch(function(err) {
-                        this.hiddenSeries = {};
-                        this.seriesList = [];
-                        this.render([]);
-                        throw err;
-                    }.bind(this));
-            };
+                return _super.prototype.issueQueries.call(this, datasource);
+            }
 
             HorizonCtrl.prototype.zoomOut = function(evt) {
                 this.publishAppEvent('zoom-out', evt);
             };
 
-            HorizonCtrl.prototype.loadSnapshot = function(snapshotData) {
+            HorizonCtrl.prototype.onDataSnapshotLoad = function(snapshotData) {
                 this.annotationsPromise = this.annotationsSrv.getAnnotations(this.dashboard);
-                this.dataHandler(snapshotData);
+                this.onDataReceived(snapshotData);
             };
 
-            HorizonCtrl.prototype.dataHandler = function(results) {
+            HorizonCtrl.prototype.onDataError = function(err) {
+                this.seriesList = [];
+                this.render([]);
+            };
+
+            HorizonCtrl.prototype.onDataReceived = function(dataList) {
+                var _this = this;
                 // png renderer returns just a url
-                if (_.isString(results)) {
-                    this.render(results);
+                if (_.isString(dataList)) {
+                    this.render(dataList);
                     return;
                 }
 
                 this.datapointsWarning = false;
                 this.datapointsCount = 0;
                 this.datapointsOutside = false;
-                this.seriesList = _.map(results.data, this.seriesHandler.bind(this));
+                this.seriesList = dataList.map(this.seriesHandler.bind(this));
                 this.datapointsWarning = this.datapointsCount === 0 || this.datapointsOutside;
 
-                var _horizon = this;
                 this.annotationsPromise.then(function(annotations) {
-                    _horizon.loading = false;
-                    _horizon.seriesList.annotations = annotations;
-                    _horizon.render(_horizon.seriesList);
+                    _this.loading = false;
+                    _this.seriesList.annotations = annotations;
+                    _this.render(_this.seriesList);
                 }, function() {
-                    _horizon.loading = false;
-                    _horizon.render(_horizon.seriesList);
+                    _this.loading = false;
+                    _this.render(_this.seriesList);
                 });
             };
 
@@ -199,10 +203,6 @@ define([
                 return series;
             };
 
-            HorizonCtrl.prototype.render = function(data) {
-                this.broadcastRender(data);
-            };
-
             HorizonCtrl.prototype.addSeriesOverride = function(override) {
                 this.panel.seriesOverrides.push(override || {});
             };
@@ -220,6 +220,10 @@ define([
 
             HorizonCtrl.prototype.exportCsv = function() {
                 fileExport.exportSeriesListToCsv(this.seriesList);
+            };
+
+            HorizonCtrl.prototype.exportCsvColumns = function() {
+                fileExport.exportSeriesListToCsvColumns(this.seriesList);
             };
 
             return HorizonCtrl;
