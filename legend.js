@@ -1,12 +1,11 @@
 define([
         'angular',
         'lodash',
-        'app/core/utils/kbn',
         'jquery',
         'jquery.flot',
         'jquery.flot.time',
     ],
-    function(angular, _, kbn, $) {
+    function(angular, _, $) {
         'use strict';
 
         var module = angular.module('grafana.directives');
@@ -24,12 +23,10 @@ define([
                     var seriesList;
                     var i;
 
-                    scope.$on('render', function() {
+                    ctrl.events.on('render', function() {
                         data = ctrl.seriesList;
                         if (data) {
-                            setTimeout(function() {
-                                render();
-                            }, 50);
+                            render();
                         }
                     });
 
