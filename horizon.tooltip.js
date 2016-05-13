@@ -9,7 +9,7 @@ define([
             var ctrl = scope.ctrl;
             var panel = ctrl.panel;
 
-            var $tooltip = $('<div id="tooltip">');
+            var $tooltip = $('<div id="tooltip" class="graph-tooltip">');
 
             this.findHoverIndexFromDataPoints = function(posX, series, last) {
                 var ps = series.datapoints.pointsize;
@@ -40,7 +40,7 @@ define([
             };
 
             this.showTooltip = function(title, innerHtml, pos) {
-                var body = '<div class="graph-tooltip small"><div class="graph-tooltip-time">' + title + '</div> ';
+                var body = '<div class="graph-tooltip-time">' + title + '</div> ';
                 body += innerHtml + '</div>';
                 $tooltip.html(body).place_tt(pos.pageX + 20, pos.pageY);
             };
@@ -158,14 +158,14 @@ define([
                         series = seriesList[i];
                         var hoverIndex = self.findHoverIndexFromData(pos.x, series);
                         if (series) {
+                            var highlightClass = '';
+                            if (serieIndex === i) {
+                                highlightClass = 'graph-tooltip-list-item--highlight';
+                            }
                             value = series.formatValue(series.data[hoverIndex][1]);
                             timestamp = timestamp || dashboard.formatDate(series.data[hoverIndex][0]);
-                            seriesHtml += '<div class="graph-tooltip-list-item"><div class="graph-tooltip-series-name">';
-                            seriesHtml += '<i class="fa fa-minus"></i> ';
-                            seriesHtml += (serieIndex === i ? '<strong>' : '');
-                            seriesHtml += series.label;
-                            seriesHtml += (serieIndex === i ? '</strong>' : '');
-                            seriesHtml += ':</div>';
+                            seriesHtml += '<div class="graph-tooltip-list-item ' + highlightClass + '"><div class="graph-tooltip-series-name">';
+                            seriesHtml += '<i class="fa fa-minus"></i> ' + series.label + ':</div>';
                             seriesHtml += '<div class="graph-tooltip-value">' + value + '</div></div>';
                         }
                     }
@@ -190,6 +190,10 @@ define([
                         value = series.formatValue(hoverInfo.value);
                         self.showTooltip(timestamp, series.label + ': <strong>' + value + '</strong>', pos);
                     }
+                }
+                // no hit
+                else {
+                    $tooltip.detach();
                 }
             });
         }
