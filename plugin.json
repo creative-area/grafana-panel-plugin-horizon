@@ -1,12 +1,12 @@
 {
     "type": "panel",
     "name": "Horizon",
-    "id": "grafana-panel-plugin-horizon",
+    "id": "creative-area-horizon-panel",
 
     "staticRoot": ".",
 
     "info": {
-        "description": "Horizon panel for grafana",
+        "description": "Horizon panel for Grafana",
         "author": {
             "name": "Creative Area",
             "url": "http://www.creative-area.net"

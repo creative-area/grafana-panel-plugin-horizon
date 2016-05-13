@@ -8,7 +8,7 @@ Either clone this repo into your grafana plugins directory (default /var/lib/gra
 Restart grafana-server and the plugin should be automatically detected and used.
 
 ```
-git clone https://github.com/creative-area/grafana-panel-plugin-horizon.git
+git clone https://github.com/creative-area/grafana-panel-plugin-horizon.git creative-area-horizon-panel
 sudo service grafana-server restart
 ```
 

@@ -111,11 +111,11 @@ define([
                 this.events.on('init-panel-actions', this.onInitPanelActions.bind(this));
             };
 
-            HorizonCtrl.templateUrl = 'public/plugins/grafana-panel-plugin-horizon/module.html';
+            HorizonCtrl.templateUrl = 'public/plugins/creative-area-horizon-panel/module.html';
 
             HorizonCtrl.prototype.onInitEditMode = function() {
                 this.icon =  "fa fa-align-justify";
-                this.addEditorTab('Configuration', 'public/plugins/grafana-panel-plugin-horizon/configEditor.html', 2);
+                this.addEditorTab('Configuration', 'public/plugins/creative-area-horizon-panel/configEditor.html', 2);
 
                 this.logScales = {
                     'linear': 1,
