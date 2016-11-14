@@ -293,6 +293,8 @@ define([
 
                             if (incrementRenderCounter) {
                                 ctrl.renderingCompleted();
+                                // hack for annotation lines positionnement
+                                elem.find('.events_line').css({top: 0});
                             }
                         }
 
@@ -344,24 +346,10 @@ define([
                         _.each(annotations, function(event) {
                             if (!types[event.annotation.name]) {
                                 types[event.annotation.name] = {
-                                    level: _.keys(types).length + 1,
-                                    icon: {
-                                        icon: "fa fa-chevron-down",
-                                        size: event.annotation.iconSize,
-                                        color: event.annotation.iconColor,
-                                    }
+                                    color: event.annotation.iconColor,
+                                    position: 'TOP',
+                                    markerSize: 4,
                                 };
-                            }
-
-                            if (event.annotation.showLine) {
-                                options.grid.markings.push({
-                                    color: event.annotation.lineColor,
-                                    lineWidth: 1,
-                                    xaxis: {
-                                        from: event.min,
-                                        to: event.max
-                                    }
-                                });
                             }
                         });
 
