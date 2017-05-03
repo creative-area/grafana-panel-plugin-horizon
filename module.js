@@ -139,7 +139,11 @@ define([
             };
 
             HorizonCtrl.prototype.issueQueries = function(datasource) {
-                this.annotationsPromise = this.annotationsSrv.getAnnotations(this.dashboard);
+                this.annotationsPromise = this.annotationsSrv.getAnnotations({
+                    dashboard: this.dashboard,
+                    panel: this.panel,
+                    range: this.range
+                });
                 return _super.prototype.issueQueries.call(this, datasource);
             }
 
@@ -148,7 +152,11 @@ define([
             };
 
             HorizonCtrl.prototype.onDataSnapshotLoad = function(snapshotData) {
-                this.annotationsPromise = this.annotationsSrv.getAnnotations(this.dashboard);
+                this.annotationsPromise = this.annotationsSrv.getAnnotations({
+                    dashboard: this.dashboard,
+                    panel: this.panel,
+                    range: this.range
+                });
                 this.onDataReceived(snapshotData);
             };
 

@@ -344,7 +344,7 @@ define([
                         var types = {};
 
                         _.each(annotations, function(event) {
-                            if (!types[event.annotation.name]) {
+                            if (event && event.annotation && !types[event.annotation.name]) {
                                 types[event.annotation.name] = {
                                     color: event.annotation.iconColor,
                                     position: 'TOP',
