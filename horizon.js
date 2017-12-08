@@ -7,7 +7,6 @@ define([
         './horizon.tooltip',
         'jquery.flot',
         './florizon',
-        'app/plugins/panel/graph/jquery.flot.events',
         'jquery.flot.selection',
         'jquery.flot.time',
         'jquery.flot.crosshair'
